@@ -47,7 +47,7 @@ export const OrganizerHub: React.FC = () => {
     tagline: '',
     description: '',
     category: 'workshop' as EventCategory,
-    date: '2025-05-20',
+    date: '2026-10-15',
     time: '10:00 AM',
     venue: 'Campus Innovation Center, Room 101',
     capacity: 100,
@@ -244,6 +244,10 @@ export const OrganizerHub: React.FC = () => {
                       src={evt.bannerUrl}
                       alt={evt.title}
                       className="w-16 h-16 rounded-xl object-cover shrink-0"
+                      referrerPolicy="no-referrer"
+                      onError={(e) => {
+                        (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1540575467063-178a50c2df87?auto=format&fit=crop&q=80&w=1200';
+                      }}
                     />
                     <div className="min-w-0">
                       <div className="flex items-center gap-2 mb-1 flex-wrap">
@@ -530,7 +534,7 @@ export const OrganizerHub: React.FC = () => {
                   required
                   value={formData.title}
                   onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                  placeholder="e.g. Apex Rust Workshop 2025"
+                  placeholder="e.g. Apex Rust Workshop 2026"
                   className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500"
                 />
               </div>

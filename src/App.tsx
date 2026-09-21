@@ -12,7 +12,10 @@ import { CertificateModal } from './components/CertificateModal';
 import { QrScannerModal } from './components/QrScannerModal';
 import { AiConciergeModal } from './components/AiConciergeModal';
 import { MernStackInspectorModal } from './components/MernStackInspectorModal';
-import { Sparkles, CalendarDays, Award, ShieldCheck, Heart } from 'lucide-react';
+import { HackathonPresentationModal } from './components/HackathonPresentationModal';
+import { AuthModal } from './components/Auth/AuthModal';
+import { StudentIDCardModal } from './components/StudentIDCardModal';
+import { Sparkles, CalendarDays, Award, ShieldCheck, Heart, Presentation, IdCard } from 'lucide-react';
 
 const MainApp: React.FC = () => {
   const {
@@ -24,6 +27,8 @@ const MainApp: React.FC = () => {
     currentUser,
     setActiveTab,
     setIsMernModalOpen,
+    isPptModalOpen,
+    setIsPptModalOpen,
   } = useCampus();
 
   return (
@@ -59,6 +64,12 @@ const MainApp: React.FC = () => {
       <QrScannerModal />
       <AiConciergeModal />
       <MernStackInspectorModal />
+      <HackathonPresentationModal
+        isOpen={isPptModalOpen}
+        onClose={() => setIsPptModalOpen(false)}
+      />
+      <AuthModal />
+      <StudentIDCardModal />
 
       {/* Collegiate Footer */}
       <footer className="bg-white border-t border-slate-200 mt-16 py-8 text-xs text-slate-500">
@@ -67,11 +78,19 @@ const MainApp: React.FC = () => {
             <div className="w-6 h-6 rounded-lg bg-emerald-600 flex items-center justify-center text-white font-bold text-xs">
               IES
             </div>
-            <span className="font-bold text-slate-800">IES College Event</span>
-            <span>— Connect. Participate. Grow.</span>
+            <span className="font-bold text-slate-800">IES College Events</span>
+            <span>— Organised by IES College of Technology & Management, Bhopal</span>
           </div>
 
           <div className="flex items-center gap-4 text-[11px]">
+            <button
+              onClick={() => setIsPptModalOpen(true)}
+              className="inline-flex items-center gap-1 text-amber-800 hover:text-amber-900 font-bold bg-amber-50 hover:bg-amber-100 px-2 py-0.5 rounded border border-amber-300 transition"
+            >
+              <Presentation className="w-3.5 h-3.5 text-amber-600" />
+              <span>Hackathon Pitch Deck (PPT)</span>
+            </button>
+            <span>•</span>
             <button
               onClick={() => setIsMernModalOpen(true)}
               className="inline-flex items-center gap-1 text-emerald-700 hover:text-emerald-800 font-bold bg-emerald-50 hover:bg-emerald-100 px-2 py-0.5 rounded border border-emerald-200 transition"

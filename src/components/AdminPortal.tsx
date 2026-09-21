@@ -134,6 +134,10 @@ export const AdminPortal: React.FC = () => {
                       src={evt.bannerUrl}
                       alt={evt.title}
                       className="w-20 h-20 rounded-xl object-cover shrink-0"
+                      referrerPolicy="no-referrer"
+                      onError={(e) => {
+                        (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1540575467063-178a50c2df87?auto=format&fit=crop&q=80&w=1200';
+                      }}
                     />
                     <div className="min-w-0">
                       <div className="flex items-center gap-2 mb-1 flex-wrap">
@@ -297,10 +301,10 @@ export const AdminPortal: React.FC = () => {
             <h3 className="font-bold text-base text-slate-900">Recent Institutional Audit Trail</h3>
             <div className="space-y-2 text-xs">
               {[
-                { action: 'Attendance Check-in Verified', detail: 'Nalin kumar pandey checked into Cloud Architecture Bootcamp', time: 'Feb 15, 2025' },
-                { action: 'Certificate Minted', detail: 'CERT-2025-KUBE-8801 cryptographically issued', time: 'Feb 17, 2025' },
-                { action: 'Event Sanctioned', detail: 'HackVanguard 2025 approved by Dean Harshit kumar panday', time: 'Mar 01, 2025' },
-                { action: 'Event Proposal Submitted', detail: 'Midnight Valorant & FIFA submitted by Devansh Roy', time: 'Mar 18, 2025' },
+                { action: 'Attendance Check-in Verified', detail: 'Nalin kumar pandey checked into Cloud Architecture Bootcamp', time: 'Sep 22, 2026' },
+                { action: 'Certificate Minted', detail: 'CERT-2026-KUBE-8801 cryptographically issued', time: 'Sep 24, 2026' },
+                { action: 'Event Sanctioned', detail: 'HackVanguard 2026 approved by Dean Harshit kumar panday', time: 'Sep 01, 2026' },
+                { action: 'Event Proposal Submitted', detail: 'Midnight Valorant & BGMI submitted by Devansh Roy', time: 'Dec 01, 2026' },
               ].map((log, i) => (
                 <div key={i} className="p-3 bg-slate-50 rounded-xl flex items-center justify-between border border-slate-100">
                   <div>

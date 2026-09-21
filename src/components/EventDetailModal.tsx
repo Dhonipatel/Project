@@ -50,6 +50,28 @@ export const EventDetailModal: React.FC<EventDetailModalProps> = ({ event, onClo
     (r) => r.eventId === event.id && r.userId === currentUser.id
   );
 
+  const getSportBadge = (tags: string[], title: string) => {
+    const combined = `${title} ${tags.join(' ')}`.toLowerCase();
+    if (combined.includes('cricket') || combined.includes('ipl')) return { label: 'Cricket', emoji: '🏏' };
+    if (combined.includes('basketball') || combined.includes('hoop')) return { label: 'Basketball', emoji: '🏀' };
+    if (combined.includes('esports') || combined.includes('gaming') || combined.includes('valorant') || combined.includes('bgmi') || combined.includes('fifa') || combined.includes('video game')) return { label: 'Video Game / Esports', emoji: '🎮' };
+    if (combined.includes('badminton')) return { label: 'Badminton', emoji: '🏸' };
+    if (combined.includes('hockey')) return { label: 'Field Hockey', emoji: '🏑' };
+    if (combined.includes('swimming') || combined.includes('aquatic')) return { label: 'Swimming', emoji: '🏊' };
+    if (combined.includes('football') || combined.includes('soccer')) return { label: 'Football', emoji: '⚽' };
+    if (combined.includes('volleyball')) return { label: 'Volleyball', emoji: '🏐' };
+    if (combined.includes('table tennis') || combined.includes('ping pong')) return { label: 'Table Tennis', emoji: '🏓' };
+    if (combined.includes('chess')) return { label: 'Chess', emoji: '♟️' };
+    if (combined.includes('athletics') || combined.includes('track') || combined.includes('sprint') || combined.includes('relay')) return { label: 'Athletics', emoji: '🏃' };
+    if (combined.includes('kabaddi')) return { label: 'Kabaddi', emoji: '🤼' };
+    if (combined.includes('tennis')) return { label: 'Lawn Tennis', emoji: '🎾' };
+    if (combined.includes('carrom') || combined.includes('pool') || combined.includes('billiards')) return { label: 'Pool & Carrom', emoji: '🎱' };
+    if (combined.includes('powerlifting') || combined.includes('tug of war') || combined.includes('strength')) return { label: 'Strongman & Tug of War', emoji: '💪' };
+    return null;
+  };
+
+  const sportBadge = getSportBadge(event.tags, event.title);
+
   const spotsLeft = Math.max(0, event.capacity - event.registeredCount);
 
   const handleRegister = async () => {
@@ -88,6 +110,15 @@ export const EventDetailModal: React.FC<EventDetailModalProps> = ({ event, onClo
             src={event.bannerUrl}
             alt={event.title}
             className="w-full h-full object-cover"
+            referrerPolicy="no-referrer"
+            onError={(e) => {
+              const target = e.target as HTMLImageElement;
+              if (event.category === 'sports') {
+                target.src = 'https://images.unsplash.com/photo-1540747913346-19e32dc3e97e?auto=format&fit=crop&q=80&w=1200';
+              } else {
+                target.src = 'https://images.unsplash.com/photo-1540575467063-178a50c2df87?auto=format&fit=crop&q=80&w=1200';
+              }
+            }}
           />
           <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/40 to-transparent" />
 
@@ -103,9 +134,16 @@ export const EventDetailModal: React.FC<EventDetailModalProps> = ({ event, onClo
           {/* Banner Meta Overlay */}
           <div className="absolute bottom-5 left-6 right-6 text-white space-y-2">
             <div className="flex items-center gap-2 flex-wrap">
-              <span className="text-[10px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-emerald-500 text-white shadow-sm">
-                {event.category}
-              </span>
+              {sportBadge ? (
+                <span className="inline-flex items-center gap-1.5 text-xs font-black px-3 py-1 rounded-full bg-emerald-500 text-slate-950 shadow-md">
+                  <span>{sportBadge.emoji}</span>
+                  <span>{sportBadge.label}</span>
+                </span>
+              ) : (
+                <span className="text-[10px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-emerald-500 text-white shadow-sm">
+                  {event.category}
+                </span>
+              )}
               <span className="text-[10px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-white/20 backdrop-blur-md text-slate-200 border border-white/20">
                 {event.eligibility}
               </span>
@@ -420,13 +458,13 @@ export const EventDetailModal: React.FC<EventDetailModalProps> = ({ event, onClo
             </div>
           ) : (
             <div className="flex flex-col sm:flex-row items-center gap-2 w-full sm:w-auto">
-              {event.category === 'hackathon' && (
+              {(event.category === 'hackathon' || event.category === 'sports') && (
                 <input
                   type="text"
-                  placeholder="Team Name (optional)"
+                  placeholder={event.category === 'sports' ? "Squad / Team Name or Jersey No. (optional)" : "Team Name (optional)"}
                   value={teamName}
                   onChange={(e) => setTeamName(e.target.value)}
-                  className="w-full sm:w-44 px-3 py-2 bg-slate-800 border border-slate-700 rounded-xl text-xs text-white placeholder-slate-400 focus:outline-none focus:ring-1 focus:ring-emerald-500"
+                  className="w-full sm:w-56 px-3 py-2 bg-slate-800 border border-slate-700 rounded-xl text-xs text-white placeholder-slate-400 focus:outline-none focus:ring-1 focus:ring-emerald-500"
                 />
               )}
 

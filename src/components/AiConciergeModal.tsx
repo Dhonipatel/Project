@@ -90,7 +90,7 @@ export const AiConciergeModal: React.FC = () => {
       const botFallback: ChatMessage = {
         id: `msg_fallback_${Date.now()}`,
         sender: 'bot',
-        text: "You can discover top campus events like HackVanguard 2025, claim your QR Pass, and scan it at the gate to earn verified credit points towards graduation honors!",
+        text: "You can discover top campus events like HackVanguard 2026, claim your QR Pass, and scan it at the gate to earn verified credit points towards graduation honors!",
         time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
       };
       setMessages((prev) => [...prev, botFallback]);

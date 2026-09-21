@@ -13,6 +13,11 @@ import {
   UserCheck,
   CalendarDays,
   BotMessageSquare,
+  Presentation,
+  IdCard,
+  UserPlus,
+  LogIn,
+  LogOut,
 } from 'lucide-react';
 
 export const Navbar: React.FC = () => {
@@ -30,6 +35,11 @@ export const Navbar: React.FC = () => {
     resetToDemoData,
     setIsMernModalOpen,
     mernStatus,
+    setIsPptModalOpen,
+    setIsAuthModalOpen,
+    setAuthModalMode,
+    setIsIdCardModalOpen,
+    setIdCardUser,
   } = useCampus();
 
   const [isUserDropdownOpen, setIsUserDropdownOpen] = useState(false);
@@ -61,6 +71,47 @@ export const Navbar: React.FC = () => {
         </div>
 
         <div className="flex items-center gap-2">
+          {/* My IES ID Card Button */}
+          <button
+            id="view-my-id-card-banner"
+            onClick={() => {
+              setIdCardUser(currentUser);
+              setIsIdCardModalOpen(true);
+            }}
+            className="flex items-center gap-1.5 px-2.5 py-1 bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-300 border border-emerald-500/40 rounded-md text-[11px] font-bold transition"
+            title="View Official IES College Student ID Card"
+          >
+            <IdCard className="w-3.5 h-3.5 text-emerald-400" />
+            <span>My IES ID Card</span>
+          </button>
+
+          {/* Register / Sign Up Button */}
+          <button
+            id="register-signup-banner"
+            onClick={() => {
+              setAuthModalMode('signup');
+              setIsAuthModalOpen(true);
+            }}
+            className="flex items-center gap-1 px-2.5 py-1 bg-teal-600 hover:bg-teal-500 text-white rounded-md text-[11px] font-bold transition shadow-sm"
+            title="Register new student with Mobile & Gmail OTP"
+          >
+            <UserPlus className="w-3 h-3" />
+            <span>Register (OTP)</span>
+          </button>
+
+          {/* Sign In Button */}
+          <button
+            id="signin-banner"
+            onClick={() => {
+              setAuthModalMode('signin');
+              setIsAuthModalOpen(true);
+            }}
+            className="flex items-center gap-1 px-2 py-1 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-md border border-slate-700 text-[11px] font-semibold transition"
+          >
+            <LogIn className="w-3 h-3" />
+            <span className="hidden sm:inline">Sign In</span>
+          </button>
+
           {/* Persona selector */}
           <div className="relative">
             <button
@@ -73,7 +124,7 @@ export const Navbar: React.FC = () => {
                 alt={currentUser.name}
                 className="w-4 h-4 rounded-full object-cover ring-1 ring-emerald-400"
               />
-              <span className="font-medium text-[11px] truncate max-w-[120px] sm:max-w-[180px]">
+              <span className="font-medium text-[11px] truncate max-w-[100px] sm:max-w-[150px]">
                 {currentUser.name}
               </span>
               <span className="text-[10px] uppercase tracking-wider px-1.5 py-0.2 rounded bg-slate-700 text-slate-300">
@@ -87,8 +138,23 @@ export const Navbar: React.FC = () => {
                 id="persona-dropdown-menu"
                 className="absolute right-0 mt-1 w-64 bg-white rounded-lg shadow-xl border border-slate-200 py-1 text-slate-800 z-50 text-xs"
               >
+                {/* ID Card Quick Action */}
+                <div className="p-2 border-b border-slate-100 bg-slate-50">
+                  <button
+                    onClick={() => {
+                      setIdCardUser(currentUser);
+                      setIsIdCardModalOpen(true);
+                      setIsUserDropdownOpen(false);
+                    }}
+                    className="w-full flex items-center justify-center gap-1.5 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded font-bold text-xs shadow-sm transition"
+                  >
+                    <IdCard className="w-3.5 h-3.5" />
+                    <span>View My IES ID Card</span>
+                  </button>
+                </div>
+
                 <div className="px-3 py-1.5 text-[10px] font-semibold uppercase text-slate-400 border-b border-slate-100">
-                  Select Persona (Interactive Switch)
+                  Switch Persona (Interactive Demo)
                 </div>
                 {allUsers.map((user) => (
                   <button
@@ -122,13 +188,49 @@ export const Navbar: React.FC = () => {
                           {user.role}
                         </span>
                       </div>
-                      <p className="text-[10px] text-slate-500 truncate">{user.branch}</p>
+                      <p className="text-[10px] text-slate-500 truncate">{user.studentIdCardNo || user.branch}</p>
                     </div>
                   </button>
                 ))}
+
+                <div className="p-2 border-t border-slate-100 flex flex-col gap-1">
+                  <button
+                    onClick={() => {
+                      setAuthModalMode('signup');
+                      setIsAuthModalOpen(true);
+                      setIsUserDropdownOpen(false);
+                    }}
+                    className="w-full text-left px-2.5 py-1.5 rounded hover:bg-slate-100 text-xs text-slate-700 flex items-center gap-2 font-medium"
+                  >
+                    <UserPlus className="w-3.5 h-3.5 text-teal-600" />
+                    <span>New Student Registration (OTP)</span>
+                  </button>
+                  <button
+                    onClick={() => {
+                      setAuthModalMode('signin');
+                      setIsAuthModalOpen(true);
+                      setIsUserDropdownOpen(false);
+                    }}
+                    className="w-full text-left px-2.5 py-1.5 rounded hover:bg-slate-100 text-xs text-slate-700 flex items-center gap-2 font-medium"
+                  >
+                    <LogIn className="w-3.5 h-3.5 text-slate-600" />
+                    <span>Sign In to Account</span>
+                  </button>
+                </div>
               </div>
             )}
           </div>
+
+          {/* Pitch Deck PPT Button in top banner */}
+          <button
+            id="open-ppt-banner-button"
+            onClick={() => setIsPptModalOpen(true)}
+            title="Open Hackathon Pitch Deck (PPT Slides & PDF export)"
+            className="flex items-center gap-1.5 bg-gradient-to-r from-amber-500/20 to-orange-500/20 hover:from-amber-500/30 hover:to-orange-500/30 text-amber-300 border border-amber-500/40 px-2.5 py-0.5 rounded-full transition text-[10px] font-bold"
+          >
+            <Presentation className="w-3 h-3 text-amber-400" />
+            <span>HACKATHON PPT</span>
+          </button>
 
           {/* Reset Demo Data Button */}
           <button
@@ -157,13 +259,13 @@ export const Navbar: React.FC = () => {
             </div>
             <div>
               <div className="flex items-center gap-1.5">
-                <span className="font-black text-xl tracking-tight text-slate-900">IES College Event</span>
+                <span className="font-black text-xl tracking-tight text-slate-900">IES College Events</span>
                 <span className="text-[10px] font-bold px-1.5 py-0.5 bg-emerald-100 text-emerald-800 rounded">
                   Official
                 </span>
               </div>
               <p className="text-[11px] font-medium text-slate-500 hidden sm:block">
-                IES College • Connect. Participate. Grow.
+                Organised by IES College, Bhopal • AICTE & RGPV
               </p>
             </div>
           </div>
@@ -269,8 +371,31 @@ export const Navbar: React.FC = () => {
             </button>
           </nav>
 
-          {/* Action CTAs: QR Scanner & AI Assistant */}
+          {/* Action CTAs: QR Scanner & AI Assistant & PPT */}
           <div className="flex items-center gap-2">
+            <button
+              id="open-id-card-nav-button"
+              onClick={() => {
+                setIdCardUser(currentUser);
+                setIsIdCardModalOpen(true);
+              }}
+              className="hidden md:flex items-center gap-1.5 px-3 py-2 bg-emerald-50 hover:bg-emerald-100 text-emerald-900 border border-emerald-300 rounded-lg text-xs font-bold transition shadow-sm"
+              title="View Official IES College Student ID Card"
+            >
+              <IdCard className="w-4 h-4 text-emerald-600" />
+              <span>IES ID Card</span>
+            </button>
+
+            <button
+              id="open-ppt-nav-button"
+              onClick={() => setIsPptModalOpen(true)}
+              className="flex items-center gap-1.5 px-3 py-2 bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-300/80 rounded-lg text-xs font-bold transition shadow-sm"
+              title="Open Hackathon Pitch Presentation Deck (PPT Slides)"
+            >
+              <Presentation className="w-4 h-4 text-amber-600" />
+              <span className="hidden sm:inline">Pitch Deck</span>
+            </button>
+
             <button
               id="open-scanner-button"
               onClick={() => setIsScannerOpen(true)}
@@ -316,6 +441,26 @@ export const Navbar: React.FC = () => {
           {myPassesCount > 0 && (
             <span className="absolute top-0 right-1 w-2 h-2 rounded-full bg-emerald-600" />
           )}
+        </button>
+        <button
+          onClick={() => {
+            setIdCardUser(currentUser);
+            setIsIdCardModalOpen(true);
+          }}
+          className="flex flex-col items-center py-1 px-2 rounded text-emerald-700 font-semibold"
+        >
+          <IdCard className="w-4 h-4" />
+          <span className="text-[10px]">ID Card</span>
+        </button>
+        <button
+          onClick={() => {
+            setAuthModalMode('signup');
+            setIsAuthModalOpen(true);
+          }}
+          className="flex flex-col items-center py-1 px-2 rounded text-teal-700 font-semibold"
+        >
+          <UserPlus className="w-4 h-4" />
+          <span className="text-[10px]">Register</span>
         </button>
         <button
           onClick={() => setActiveTab('passport')}

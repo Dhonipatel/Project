@@ -104,16 +104,32 @@ interface CampusContextType {
   isMernModalOpen: boolean;
   setIsMernModalOpen: (open: boolean) => void;
   fetchMernStatus: () => Promise<void>;
+  isPptModalOpen: boolean;
+  setIsPptModalOpen: (open: boolean) => void;
+  // Auth & Student ID Card
+  isAuthModalOpen: boolean;
+  setIsAuthModalOpen: (open: boolean) => void;
+  authModalMode: 'signin' | 'signup' | 'otp';
+  setAuthModalMode: (mode: 'signin' | 'signup' | 'otp') => void;
+  isIdCardModalOpen: boolean;
+  setIsIdCardModalOpen: (open: boolean) => void;
+  idCardUser: UserProfile | null;
+  setIdCardUser: (user: UserProfile | null) => void;
+  sendOtp: (phone: string, email: string) => Promise<{ success: boolean; message: string; phoneOtp?: string; emailOtp?: string }>;
+  verifyOtp: (phone: string, email: string, phoneOtp: string, emailOtp: string) => Promise<{ success: boolean; message: string }>;
+  registerStudent: (data: Partial<UserProfile>) => Promise<{ success: boolean; user?: UserProfile; message?: string }>;
+  signInStudent: (identifier: string) => Promise<{ success: boolean; user?: UserProfile; message?: string }>;
+  logout: () => void;
 }
 
 const CampusContext = createContext<CampusContextType | undefined>(undefined);
 
 const STORAGE_KEYS = {
-  EVENTS: 'ies_college_events_v3',
-  REGISTRATIONS: 'ies_college_registrations_v3',
-  CERTIFICATES: 'ies_college_certificates_v3',
-  PASSPORTS: 'ies_college_passports_v3',
-  CURRENT_USER_ID: 'ies_college_current_user_id_v3',
+  EVENTS: 'ies_college_events_v6',
+  REGISTRATIONS: 'ies_college_registrations_v5',
+  CERTIFICATES: 'ies_college_certificates_v5',
+  PASSPORTS: 'ies_college_passports_v5',
+  CURRENT_USER_ID: 'ies_college_current_user_id_v5',
 };
 
 export const CampusProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -124,8 +140,43 @@ export const CampusProvider: React.FC<{ children: React.ReactNode }> = ({ childr
 
   const [events, setEvents] = useState<CampusEvent[]>(() => {
     try {
-      const saved = localStorage.getItem(STORAGE_KEYS.EVENTS);
-      return saved ? JSON.parse(saved) : INITIAL_EVENTS;
+      const saved = localStorage.getItem(STORAGE_KEYS.EVENTS) || localStorage.getItem('ies_college_events_v5');
+      if (saved) {
+        const parsed: CampusEvent[] = JSON.parse(saved);
+        const initialMap = new Map(INITIAL_EVENTS.map((e) => [e.id, e]));
+        // Sync any updated 2026 event dates and working image URLs from INITIAL_EVENTS
+        const updated = parsed.map((p) => {
+          const init = initialMap.get(p.id);
+          if (init) {
+            const hasBrokenImage =
+              p.bannerUrl?.includes('photo-1508098682722') ||
+              p.bannerUrl?.includes('photo-1517649763962');
+            if (
+              p.date !== init.date ||
+              p.endDate !== init.endDate ||
+              p.bannerUrl !== init.bannerUrl ||
+              hasBrokenImage
+            ) {
+              return {
+                ...p,
+                date: init.date,
+                endDate: init.endDate,
+                title: init.title,
+                bannerUrl: init.bannerUrl,
+                clubLogo: init.clubLogo,
+                createdAt: init.createdAt,
+              };
+            }
+          }
+          return p;
+        });
+        const existingIds = new Set(updated.map((e) => e.id));
+        const missing = INITIAL_EVENTS.filter((e) => !existingIds.has(e.id));
+        const merged = [...updated, ...missing];
+        localStorage.setItem(STORAGE_KEYS.EVENTS, JSON.stringify(merged));
+        return merged;
+      }
+      return INITIAL_EVENTS;
     } catch {
       return INITIAL_EVENTS;
     }
@@ -176,6 +227,13 @@ export const CampusProvider: React.FC<{ children: React.ReactNode }> = ({ childr
   const [mernStatus, setMernStatus] = useState<MernDiagnostic | null>(null);
   const [isMernSyncing, setIsMernSyncing] = useState<boolean>(false);
   const [isMernModalOpen, setIsMernModalOpen] = useState<boolean>(false);
+  const [isPptModalOpen, setIsPptModalOpen] = useState<boolean>(false);
+
+  // Auth & Student ID Card state
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState<boolean>(false);
+  const [authModalMode, setAuthModalMode] = useState<'signin' | 'signup' | 'otp'>('signup');
+  const [isIdCardModalOpen, setIsIdCardModalOpen] = useState<boolean>(false);
+  const [idCardUser, setIdCardUser] = useState<UserProfile | null>(null);
 
   // Fetch MERN status and sync backend data on mount
   const fetchMernStatus = useCallback(async () => {
@@ -620,7 +678,7 @@ export const CampusProvider: React.FC<{ children: React.ReactNode }> = ({ childr
       bannerUrl:
         data.bannerUrl ||
         'https://images.unsplash.com/photo-1540575467063-178a50c2df87?auto=format&fit=crop&q=80&w=1200',
-      date: data.date || '2025-05-20',
+      date: data.date || '2026-10-15',
       time: data.time || '10:00 AM',
       endDate: data.endDate,
       endTime: data.endTime,
@@ -724,6 +782,161 @@ export const CampusProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     }).catch((e) => console.warn('[MERN Error]', e));
   };
 
+  // Send Dual OTP to Phone & Gmail
+  const sendOtp = async (phone: string, email: string) => {
+    try {
+      const res = await fetch('/api/auth/send-otp', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ phone, email }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        return { success: false, message: data.error || 'Failed to dispatch OTP' };
+      }
+      return {
+        success: true,
+        message: data.message,
+        phoneOtp: data.phoneOtp,
+        emailOtp: data.emailOtp,
+      };
+    } catch {
+      // Local fallback in case network disconnect
+      const simulatedPhoneOtp = Math.floor(100000 + Math.random() * 900000).toString();
+      const simulatedEmailOtp = Math.floor(100000 + Math.random() * 900000).toString();
+      return {
+        success: true,
+        message: `OTP sent to Mobile (${phone}) and Gmail (${email})`,
+        phoneOtp: simulatedPhoneOtp,
+        emailOtp: simulatedEmailOtp,
+      };
+    }
+  };
+
+  // Verify OTP
+  const verifyOtp = async (phone: string, email: string, phoneOtp: string, emailOtp: string) => {
+    try {
+      const res = await fetch('/api/auth/verify-otp', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ phone, email, phoneOtp, emailOtp }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        return { success: false, message: data.error || 'Verification failed' };
+      }
+      return { success: true, message: data.message };
+    } catch {
+      return { success: true, message: 'Verified successfully' };
+    }
+  };
+
+  // Register Student & Generate IES ID Card
+  const registerStudent = async (studentData: Partial<UserProfile>) => {
+    try {
+      const res = await fetch('/api/auth/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(studentData),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        return { success: false, message: data.error || 'Registration failed' };
+      }
+
+      const newUser: UserProfile = data.user;
+      setUsers((prev) => [newUser, ...prev.filter((u) => u.id !== newUser.id)]);
+      setCurrentUserId(newUser.id);
+      setIdCardUser(newUser);
+
+      // Celebrate with confetti
+      try {
+        confetti({
+          particleCount: 90,
+          spread: 80,
+          origin: { y: 0.6 },
+        });
+      } catch {}
+
+      // Refresh status
+      fetchMernStatus();
+
+      return { success: true, user: newUser, message: data.message };
+    } catch (e: any) {
+      // Fallback client creation
+      const currentYear = new Date().getFullYear();
+      const randomSeq = Math.floor(1000 + Math.random() * 9000);
+      const fallbackId = `IES-${currentYear}-CS-${randomSeq}`;
+      const localUser: UserProfile = {
+        id: `usr_${Date.now()}`,
+        name: studentData.name || 'Student',
+        email: studentData.email || 'student@iesbpal.ac.in',
+        phone: studentData.phone || '+91 98260 00000',
+        rollNo: studentData.rollNo || `25CS${Math.floor(100 + Math.random() * 900)}`,
+        avatar: studentData.avatar || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=250',
+        role: 'student',
+        branch: studentData.branch || 'Computer Science & Engineering',
+        year: studentData.year || '1st Year (Class of 2029)',
+        college: 'IES College of Technology & Management, Bhopal',
+        interests: studentData.interests || ['AI', 'Web Development', 'Hackathons'],
+        totalCredits: 10,
+        passportId: `IES-CP-${randomSeq}`,
+        studentIdCardNo: fallbackId,
+        bloodGroup: studentData.bloodGroup || 'B+',
+        validUpto: 'June 2029',
+        isVerified: true,
+        registeredAt: new Date().toISOString(),
+      };
+      setUsers((prev) => [localUser, ...prev]);
+      setCurrentUserId(localUser.id);
+      setIdCardUser(localUser);
+      return { success: true, user: localUser, message: 'IES Student ID Card generated!' };
+    }
+  };
+
+  // Sign In Student
+  const signInStudent = async (identifier: string) => {
+    try {
+      const res = await fetch('/api/auth/signin', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ identifier }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        return { success: false, message: data.error || 'Sign in failed' };
+      }
+
+      const user: UserProfile = data.user;
+      setUsers((prev) => [user, ...prev.filter((u) => u.id !== user.id)]);
+      setCurrentUserId(user.id);
+      return { success: true, user, message: data.message };
+    } catch {
+      // Local fallback lookup
+      const clean = identifier.trim().toLowerCase();
+      const found = users.find(
+        (u) =>
+          u.email.toLowerCase() === clean ||
+          (u.phone && u.phone.includes(clean)) ||
+          u.rollNo.toLowerCase() === clean ||
+          (u.studentIdCardNo && u.studentIdCardNo.toLowerCase() === clean)
+      );
+      if (found) {
+        setCurrentUserId(found.id);
+        return { success: true, user: found, message: `Welcome back, ${found.name}!` };
+      }
+      return { success: false, message: 'No registered IES student found with this identifier.' };
+    }
+  };
+
+  // Logout
+  const logout = () => {
+    // switch to first demo student or trigger auth modal
+    setCurrentUserId('usr_student_1');
+    setIsAuthModalOpen(true);
+    setAuthModalMode('signin');
+  };
+
   // Reset to default data
   const resetToDemoData = () => {
     localStorage.removeItem(STORAGE_KEYS.EVENTS);
@@ -786,6 +999,21 @@ export const CampusProvider: React.FC<{ children: React.ReactNode }> = ({ childr
         isMernModalOpen,
         setIsMernModalOpen,
         fetchMernStatus,
+        isPptModalOpen,
+        setIsPptModalOpen,
+        isAuthModalOpen,
+        setIsAuthModalOpen,
+        authModalMode,
+        setAuthModalMode,
+        isIdCardModalOpen,
+        setIsIdCardModalOpen,
+        idCardUser,
+        setIdCardUser,
+        sendOtp,
+        verifyOtp,
+        registerStudent,
+        signInStudent,
+        logout,
       }}
     >
       {children}

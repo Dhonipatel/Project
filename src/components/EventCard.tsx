@@ -45,11 +45,33 @@ export const EventCard: React.FC<EventCardProps> = ({ event, onSelect, onRegiste
       case 'management':
         return 'bg-emerald-100 text-emerald-800 border-emerald-200';
       case 'sports':
-        return 'bg-orange-100 text-orange-800 border-orange-200';
+        return 'bg-emerald-950 text-emerald-200 border-emerald-700';
       default:
         return 'bg-slate-100 text-slate-800 border-slate-200';
     }
   };
+
+  const getSportBadge = (tags: string[], title: string) => {
+    const combined = `${title} ${tags.join(' ')}`.toLowerCase();
+    if (combined.includes('cricket') || combined.includes('ipl')) return { label: 'Cricket', emoji: '🏏', bg: 'bg-emerald-700 text-white border-emerald-500' };
+    if (combined.includes('basketball') || combined.includes('hoop')) return { label: 'Basketball', emoji: '🏀', bg: 'bg-orange-600 text-white border-orange-400' };
+    if (combined.includes('esports') || combined.includes('gaming') || combined.includes('valorant') || combined.includes('bgmi') || combined.includes('fifa') || combined.includes('video game')) return { label: 'Video Game / Esports', emoji: '🎮', bg: 'bg-purple-700 text-white border-purple-500' };
+    if (combined.includes('badminton')) return { label: 'Badminton', emoji: '🏸', bg: 'bg-teal-700 text-white border-teal-500' };
+    if (combined.includes('hockey')) return { label: 'Hockey', emoji: '🏑', bg: 'bg-sky-700 text-white border-sky-500' };
+    if (combined.includes('swimming') || combined.includes('aquatic')) return { label: 'Swimming', emoji: '🏊', bg: 'bg-cyan-700 text-white border-cyan-500' };
+    if (combined.includes('football') || combined.includes('soccer')) return { label: 'Football', emoji: '⚽', bg: 'bg-emerald-800 text-white border-emerald-600' };
+    if (combined.includes('volleyball')) return { label: 'Volleyball', emoji: '🏐', bg: 'bg-amber-700 text-white border-amber-500' };
+    if (combined.includes('table tennis') || combined.includes('ping pong')) return { label: 'Table Tennis', emoji: '🏓', bg: 'bg-rose-700 text-white border-rose-500' };
+    if (combined.includes('chess')) return { label: 'Chess', emoji: '♟️', bg: 'bg-slate-900 text-white border-slate-700' };
+    if (combined.includes('athletics') || combined.includes('track') || combined.includes('sprint') || combined.includes('relay')) return { label: 'Athletics', emoji: '🏃', bg: 'bg-red-700 text-white border-red-500' };
+    if (combined.includes('kabaddi')) return { label: 'Kabaddi', emoji: '🤼', bg: 'bg-orange-800 text-white border-orange-600' };
+    if (combined.includes('tennis')) return { label: 'Lawn Tennis', emoji: '🎾', bg: 'bg-lime-700 text-white border-lime-500' };
+    if (combined.includes('carrom') || combined.includes('pool') || combined.includes('billiards')) return { label: 'Pool & Carrom', emoji: '🎱', bg: 'bg-indigo-700 text-white border-indigo-500' };
+    if (combined.includes('powerlifting') || combined.includes('tug of war') || combined.includes('strength')) return { label: 'Strongman & Tug of War', emoji: '💪', bg: 'bg-amber-900 text-amber-200 border-amber-600' };
+    return null;
+  };
+
+  const sportBadge = getSportBadge(event.tags, event.title);
 
   return (
     <div
@@ -64,18 +86,39 @@ export const EventCard: React.FC<EventCardProps> = ({ event, onSelect, onRegiste
             alt={event.title}
             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
             loading="lazy"
+            referrerPolicy="no-referrer"
+            onError={(e) => {
+              // Graceful fallback to category/sports stock image
+              const target = e.target as HTMLImageElement;
+              if (event.category === 'sports') {
+                target.src = 'https://images.unsplash.com/photo-1540747913346-19e32dc3e97e?auto=format&fit=crop&q=80&w=1200';
+              } else {
+                target.src = 'https://images.unsplash.com/photo-1540575467063-178a50c2df87?auto=format&fit=crop&q=80&w=1200';
+              }
+            }}
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none" />
 
           {/* Top Category Badge & Credits */}
           <div className="absolute top-3 left-3 right-3 flex items-center justify-between gap-2">
-            <span
-              className={`text-[10px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full border shadow-sm ${getCategoryColor(
-                event.category
-              )}`}
-            >
-              {event.category}
-            </span>
+            <div className="flex items-center gap-1.5">
+              {sportBadge ? (
+                <span
+                  className={`inline-flex items-center gap-1 text-[11px] font-extrabold px-2.5 py-0.5 rounded-full border shadow-md backdrop-blur-md ${sportBadge.bg}`}
+                >
+                  <span>{sportBadge.emoji}</span>
+                  <span>{sportBadge.label}</span>
+                </span>
+              ) : (
+                <span
+                  className={`text-[10px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full border shadow-sm ${getCategoryColor(
+                    event.category
+                  )}`}
+                >
+                  {event.category}
+                </span>
+              )}
+            </div>
 
             <div className="flex items-center gap-1.5">
               {recommendation && (

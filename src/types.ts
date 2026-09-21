@@ -4,6 +4,7 @@ export interface UserProfile {
   id: string;
   name: string;
   email: string;
+  phone?: string;
   rollNo: string;
   avatar: string;
   role: UserRole;
@@ -13,6 +14,11 @@ export interface UserProfile {
   interests: string[];
   totalCredits: number;
   passportId: string;
+  bloodGroup?: string;
+  validUpto?: string;
+  studentIdCardNo?: string;
+  isVerified?: boolean;
+  registeredAt?: string;
 }
 
 export type EventCategory = 

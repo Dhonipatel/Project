@@ -13,6 +13,10 @@ import {
   CheckCircle2,
   X,
   RefreshCw,
+  IdCard,
+  UserPlus,
+  ShieldCheck,
+  GraduationCap,
 } from 'lucide-react';
 
 export const ExploreEventsView: React.FC = () => {
@@ -27,20 +31,44 @@ export const ExploreEventsView: React.FC = () => {
     isLoadingAiRecs,
     refreshAiRecommendations,
     registerForEvent,
+    setIsAuthModalOpen,
+    setAuthModalMode,
+    setIsIdCardModalOpen,
+    setIdCardUser,
   } = useCampus();
 
   const [selectedEventForModal, setSelectedEventForModal] = useState<CampusEvent | null>(null);
   const [filterFreeOnly, setFilterFreeOnly] = useState(false);
   const [filterCertOnly, setFilterCertOnly] = useState(false);
+  const [selectedSport, setSelectedSport] = useState<string>('all');
 
   const categories: { label: string; value: string }[] = [
     { label: 'All Events', value: 'all' },
+    { label: '🏆 Sports & Games (Cricket, Esports, etc.)', value: 'sports' },
     { label: 'Hackathons', value: 'hackathon' },
     { label: 'Workshops', value: 'workshop' },
     { label: 'Technical', value: 'technical' },
     { label: 'Cultural Fests', value: 'cultural' },
     { label: 'Startup & Pitch', value: 'management' },
-    { label: 'Sports', value: 'sports' },
+  ];
+
+  const sportsFilters = [
+    { id: 'all', label: 'All Sports', emoji: '🏅' },
+    { id: 'cricket', label: 'Cricket (IPL T20)', emoji: '🏏' },
+    { id: 'basketball', label: 'Basketball (5v5 & 3x3)', emoji: '🏀' },
+    { id: 'esports', label: 'Video Games (BGMI/Valorant/FC25)', emoji: '🎮' },
+    { id: 'badminton', label: 'Badminton', emoji: '🏸' },
+    { id: 'hockey', label: 'Field Hockey', emoji: '🏑' },
+    { id: 'swimming', label: 'Swimming / Aquatics', emoji: '🏊' },
+    { id: 'football', label: 'Football (Soccer)', emoji: '⚽' },
+    { id: 'volleyball', label: 'Volleyball', emoji: '🏐' },
+    { id: 'table tennis', label: 'Table Tennis', emoji: '🏓' },
+    { id: 'chess', label: 'Chess (Mind Sports)', emoji: '♟️' },
+    { id: 'athletics', label: 'Athletics & Track', emoji: '🏃' },
+    { id: 'kabaddi', label: 'Mat Kabaddi', emoji: '🤼' },
+    { id: 'tennis', label: 'Lawn Tennis', emoji: '🎾' },
+    { id: 'carrom', label: 'Pool & Carrom', emoji: '🎱' },
+    { id: 'powerlifting', label: 'Strongman & Tug of War', emoji: '💪' },
   ];
 
   // Only display published events to students
@@ -54,10 +82,16 @@ export const ExploreEventsView: React.FC = () => {
       evt.clubName.toLowerCase().includes(searchQuery.toLowerCase()) ||
       evt.tags.some((t) => t.toLowerCase().includes(searchQuery.toLowerCase()));
 
+    const matchesSport =
+      selectedSport === 'all' ||
+      evt.tags.some((t) => t.toLowerCase().includes(selectedSport.toLowerCase())) ||
+      evt.title.toLowerCase().includes(selectedSport.toLowerCase()) ||
+      evt.description.toLowerCase().includes(selectedSport.toLowerCase());
+
     const matchesFree = !filterFreeOnly || evt.isFree;
     const matchesCert = !filterCertOnly || evt.hasCertificate;
 
-    return matchesCat && matchesSearch && matchesFree && matchesCert;
+    return matchesCat && matchesSearch && matchesSport && matchesFree && matchesCert;
   });
 
   // Top recommendation for banner
@@ -69,19 +103,51 @@ export const ExploreEventsView: React.FC = () => {
       {/* Hero Banner with AI Personalization for Students */}
       {currentUser.role === 'student' && (
         <div className="relative rounded-3xl overflow-hidden bg-gradient-to-r from-slate-900 via-emerald-950 to-slate-900 text-white p-6 sm:p-8 border border-emerald-500/20 shadow-xl">
-          <div className="relative z-10 max-w-2xl space-y-3">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 text-xs font-semibold border border-emerald-500/30">
-              <Sparkles className="w-3.5 h-3.5" />
-              <span>Personalized Event Radar for {currentUser.name}</span>
+          <div className="relative z-10 max-w-3xl space-y-4">
+            <div className="flex flex-wrap items-center gap-2">
+              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 text-xs font-bold border border-emerald-500/30">
+                <GraduationCap className="w-3.5 h-3.5 text-emerald-400" />
+                <span>IES COLLEGE OF TECHNOLOGY & MANAGEMENT, BHOPAL</span>
+              </div>
+              <span className="text-[11px] text-amber-300 font-semibold px-2 py-0.5 rounded bg-amber-950/60 border border-amber-500/30">
+                AICTE Approved • RGPV Affiliated
+              </span>
             </div>
 
             <h1 className="text-2xl sm:text-4xl font-black tracking-tight leading-tight">
-              Connect. Participate. Grow.
+              IES College Annual Techno-Cultural & Innovation Fests
             </h1>
 
             <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
-              Explore accredited campus fests, register in seconds, and scan your verified digital QR passes to collect credit points toward your official Campus Passport.
+              All events are proudly organized and hosted by <strong>IES College, Bhopal</strong>. Register with your Phone & Gmail (instant OTP verification) to generate your official Student ID Card, secure QR entry passes, and earn verified academic activity credits.
             </p>
+
+            {/* Quick Action CTA Bar */}
+            <div className="flex flex-wrap items-center gap-3 pt-1">
+              <button
+                id="hero-register-student-btn"
+                onClick={() => {
+                  setAuthModalMode('signup');
+                  setIsAuthModalOpen(true);
+                }}
+                className="flex items-center gap-2 px-4 py-2.5 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-xs rounded-xl shadow-lg shadow-emerald-500/20 transition"
+              >
+                <UserPlus className="w-4 h-4" />
+                <span>Register Student (Dual OTP)</span>
+              </button>
+
+              <button
+                id="hero-view-id-card-btn"
+                onClick={() => {
+                  setIdCardUser(currentUser);
+                  setIsIdCardModalOpen(true);
+                }}
+                className="flex items-center gap-2 px-4 py-2.5 bg-white/10 hover:bg-white/20 text-white font-bold text-xs rounded-xl border border-white/20 backdrop-blur-sm transition"
+              >
+                <IdCard className="w-4 h-4 text-emerald-400" />
+                <span>View My IES Student ID Card</span>
+              </button>
+            </div>
 
             {topRecEvent && (
               <div className="mt-4 pt-4 border-t border-white/10 flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-white/5 p-3.5 rounded-2xl border border-white/10 backdrop-blur-sm">
@@ -177,7 +243,12 @@ export const ExploreEventsView: React.FC = () => {
             <button
               key={cat.value}
               id={`cat-filter-${cat.value}`}
-              onClick={() => setSelectedCategory(cat.value)}
+              onClick={() => {
+                setSelectedCategory(cat.value);
+                if (cat.value !== 'sports' && cat.value !== 'all') {
+                  setSelectedSport('all');
+                }
+              }}
               className={`px-3.5 py-1.5 rounded-full text-xs font-semibold transition shrink-0 ${
                 selectedCategory === cat.value
                   ? 'bg-slate-900 text-white shadow-sm'
@@ -188,6 +259,44 @@ export const ExploreEventsView: React.FC = () => {
             </button>
           ))}
         </div>
+
+        {/* Dedicated University Sports Filter Strip */}
+        {(selectedCategory === 'sports' || selectedSport !== 'all') && (
+          <div className="p-4 bg-gradient-to-r from-emerald-950 via-slate-900 to-emerald-950 border border-emerald-500/30 rounded-2xl text-white space-y-3 shadow-md">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+              <div className="flex items-center gap-2">
+                <span className="text-lg">🏆</span>
+                <h2 className="text-sm font-bold text-white tracking-wide">
+                  IES College University Sports & Esports Arena
+                </h2>
+                <span className="text-[10px] bg-emerald-500/20 text-emerald-300 font-semibold px-2 py-0.5 rounded-full border border-emerald-500/30">
+                  15+ Games
+                </span>
+              </div>
+              <span className="text-[11px] text-slate-300">
+                Filter by specific sport or inter-branch championship:
+              </span>
+            </div>
+
+            <div className="flex items-center gap-2 overflow-x-auto pb-1 pt-1">
+              {sportsFilters.map((s) => (
+                <button
+                  key={s.id}
+                  id={`sport-filter-${s.id}`}
+                  onClick={() => setSelectedSport(s.id)}
+                  className={`px-3 py-1 rounded-full text-xs font-semibold transition shrink-0 flex items-center gap-1.5 ${
+                    selectedSport === s.id
+                      ? 'bg-emerald-500 text-slate-950 font-bold shadow-md scale-105'
+                      : 'bg-white/10 hover:bg-white/20 text-white border border-white/10'
+                  }`}
+                >
+                  <span>{s.emoji}</span>
+                  <span>{s.label}</span>
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
       </div>
 
       {/* Events Grid */}
@@ -213,6 +322,7 @@ export const ExploreEventsView: React.FC = () => {
             onClick={() => {
               setSearchQuery('');
               setSelectedCategory('all');
+              setSelectedSport('all');
               setFilterFreeOnly(false);
               setFilterCertOnly(false);
             }}
