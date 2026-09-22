@@ -24,7 +24,7 @@ export const AiConciergeModal: React.FC = () => {
     {
       id: 'm_welcome',
       sender: 'bot',
-      text: `Hi ${currentUser.name}! I'm IES CampusBot, your official AI event assistant for IES College. You can ask me about upcoming hackathons, how to earn passport credits, or getting your QR pass verified.`,
+      text: `Hi ${currentUser.name}! I'm CampusBot, your official AI event assistant for College Event. You can ask me about upcoming hackathons, how to earn passport credits, or getting your QR pass verified.`,
       time: 'Just now',
     },
   ]);
@@ -90,7 +90,7 @@ export const AiConciergeModal: React.FC = () => {
       const botFallback: ChatMessage = {
         id: `msg_fallback_${Date.now()}`,
         sender: 'bot',
-        text: "You can discover top campus events like HackVanguard 2026, claim your QR Pass, and scan it at the gate to earn verified credit points towards graduation honors!",
+        text: "You can discover top campus events like HackVanguard '26, claim your QR Pass, and scan it at the gate to earn verified credit points towards graduation honors!",
         time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
       };
       setMessages((prev) => [...prev, botFallback]);
@@ -113,7 +113,7 @@ export const AiConciergeModal: React.FC = () => {
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <h3 className="font-bold text-base">IES CampusBot AI Concierge</h3>
+                <h3 className="font-bold text-base">CampusBot AI Concierge</h3>
                 <span className="px-2 py-0.5 rounded-full text-[9px] font-bold bg-white/20 text-emerald-100 uppercase">
                   Powered by Gemini
                 </span>

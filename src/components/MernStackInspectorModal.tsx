@@ -51,7 +51,7 @@ export const MernStackInspectorModal: React.FC = () => {
   };
 
   const copyEnvSample = () => {
-    navigator.clipboard.writeText('MONGODB_URI=mongodb+srv://<username>:<password>@cluster0.mongodb.net/ies_college_db?retryWrites=true&w=majority');
+    navigator.clipboard.writeText('MONGODB_URI=mongodb+srv://<username>:<password>@cluster0.mongodb.net/college_events_db?retryWrites=true&w=majority');
     setCopiedEnv(true);
     setTimeout(() => setCopiedEnv(false), 2500);
   };
@@ -364,7 +364,7 @@ export const MernStackInspectorModal: React.FC = () => {
 
             <div className="flex items-center justify-between bg-slate-950 p-2.5 rounded-lg border border-slate-800 font-mono text-xs text-slate-400">
               <span className="truncate pr-2">
-                MONGODB_URI=mongodb+srv://user:pass@cluster.mongodb.net/ies_college_db
+                MONGODB_URI=mongodb+srv://user:pass@cluster.mongodb.net/college_events_db
               </span>
               <button
                 onClick={copyEnvSample}
@@ -381,7 +381,7 @@ export const MernStackInspectorModal: React.FC = () => {
         <div className="px-6 py-3 border-t border-slate-800 bg-slate-900/60 flex items-center justify-between text-xs text-slate-400">
           <div className="flex items-center gap-2">
             <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-            <span>MERN Stack Operational • IES College Portal</span>
+            <span>MERN Stack Operational • College Event Portal</span>
           </div>
           <button
             onClick={() => setIsMernModalOpen(false)}

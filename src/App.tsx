@@ -76,10 +76,10 @@ const MainApp: React.FC = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-2">
             <div className="w-6 h-6 rounded-lg bg-emerald-600 flex items-center justify-center text-white font-bold text-xs">
-              IES
+              CE
             </div>
-            <span className="font-bold text-slate-800">IES College Events</span>
-            <span>— Organised by IES College of Technology & Management, Bhopal</span>
+            <span className="font-bold text-slate-800">College Event</span>
+            <span>— Official Campus Event & Passport Portal</span>
           </div>
 
           <div className="flex items-center gap-4 text-[11px]">

@@ -504,7 +504,7 @@ router.post('/registrations/checkin', async (req: Request, res: Response) => {
           day: 'numeric',
           year: 'numeric',
         }),
-        organizingClub: `${event.clubName} in association with IES College`,
+        organizingClub: `${event.clubName} in association with College Event`,
         creditPoints: earnedCredits,
         verificationHash: `0x${Math.random().toString(16).substring(2, 10)}${Math.random().toString(16).substring(2, 10)}${Math.random().toString(16).substring(2, 10)}`,
         signatory: {
@@ -526,7 +526,7 @@ router.post('/registrations/checkin', async (req: Request, res: Response) => {
       rollNo: reg.userRollNo,
       branch: reg.userBranch,
       year: 'Class of 2026',
-      college: 'IES College',
+      college: 'College Event',
       passportNumber: `CP-2024-${Math.floor(1000 + Math.random() * 9000)}`,
       totalCredits: 0,
       eventsAttended: 0,
@@ -611,7 +611,7 @@ router.get('/certificates/verify/:hash', async (req: Request, res: Response) => 
     return res.json({
       valid: true,
       certificate: cert,
-      institution: 'IES College of Technology & Management',
+      institution: 'College Event Portal, Bhopal',
       signatory: cert.signatory || {
         name: 'Harshit kumar panday',
         title: 'Dean of Student Affairs & Chief Administrator',
@@ -622,7 +622,7 @@ router.get('/certificates/verify/:hash', async (req: Request, res: Response) => 
   }
 });
 
-// ---------------- AUTH & OTP ENDPOINTS (IES COLLEGE REGISTRATION & ID CARD) ---------------- //
+// ---------------- AUTH & OTP ENDPOINTS (COLLEGE EVENT REGISTRATION & ID CARD) ---------------- //
 interface OtpEntry {
   phoneOtp: string;
   emailOtp: string;
@@ -712,7 +712,7 @@ router.post('/auth/verify-otp', (req: Request, res: Response) => {
   });
 });
 
-// Register New Student & Generate Official IES College Student ID Card
+// Register New Student & Generate Official College Student ID Card
 router.post('/auth/register', async (req: Request, res: Response) => {
   try {
     const {
@@ -750,10 +750,10 @@ router.post('/auth/register', async (req: Request, res: Response) => {
     const code = branchCodeMap[branch] || 'CS';
     const currentYear = new Date().getFullYear();
     const randomSeq = Math.floor(1000 + Math.random() * 9000);
-    const studentIdCardNo = `IES-${currentYear}-${code}-${randomSeq}`;
+    const studentIdCardNo = `CE-${currentYear}-${code}-${randomSeq}`;
     const generatedRollNo = rollNo && rollNo.trim() ? rollNo.trim() : `${currentYear.toString().slice(-2)}${code}${Math.floor(100 + Math.random() * 900)}`;
     const userId = `usr_student_${Date.now()}`;
-    const passportNumber = `IES-CP-${currentYear}-${randomSeq}`;
+    const passportNumber = `CE-CP-${currentYear}-${randomSeq}`;
 
     const newUser = {
       id: userId,
@@ -765,9 +765,9 @@ router.post('/auth/register', async (req: Request, res: Response) => {
       role: 'student',
       branch: branch || 'Computer Science & Engineering',
       year: year || '1st Year (Class of 2029)',
-      college: 'IES College of Technology & Management, Bhopal',
+      college: 'College Event Portal, Bhopal',
       interests: Array.isArray(interests) && interests.length > 0 ? interests : ['Artificial Intelligence', 'Web Development', 'Campus Hackathons'],
-      totalCredits: 10, // Welcome credits bonus for verified IES student!
+      totalCredits: 10, // Welcome credits bonus for verified student!
       passportId: passportNumber,
       studentIdCardNo,
       bloodGroup: bloodGroup || 'B+',
@@ -786,7 +786,7 @@ router.post('/auth/register', async (req: Request, res: Response) => {
       rollNo: newUser.rollNo,
       branch: newUser.branch,
       year: newUser.year,
-      college: 'IES College of Technology & Management, Bhopal',
+      college: 'College Event Portal, Bhopal',
       passportNumber,
       totalCredits: 10,
       eventsAttended: 0,
@@ -794,9 +794,9 @@ router.post('/auth/register', async (req: Request, res: Response) => {
       badges: [
         {
           id: `bdg_welcome_${userId}`,
-          name: 'IES Enrolled Citizen',
+          name: 'College Event Citizen',
           icon: 'ShieldCheck',
-          description: 'Official verified student member of IES College Portal with generated Student ID Card',
+          description: 'Official verified student member of College Event Portal with generated Student ID Card',
           unlockedAt: 'Just now',
           category: 'milestone',
         },
@@ -813,11 +813,11 @@ router.post('/auth/register', async (req: Request, res: Response) => {
       }
     }
 
-    recordLog('POST', '/api/auth/register', 201, `Registered student ${newUser.name} with IES ID Card ${studentIdCardNo}`);
+    recordLog('POST', '/api/auth/register', 201, `Registered student ${newUser.name} with Student ID Card ${studentIdCardNo}`);
 
     return res.status(201).json({
       success: true,
-      message: 'Student registration complete and IES College Student ID Card generated!',
+      message: 'Student registration complete and College Student ID Card generated!',
       user: newUser,
       studentIdCardNo,
     });
@@ -830,7 +830,7 @@ router.post('/auth/register', async (req: Request, res: Response) => {
 router.post('/auth/signin', (req: Request, res: Response) => {
   const { identifier, phoneOtp, emailOtp } = req.body || {};
   if (!identifier) {
-    return res.status(400).json({ error: 'Please enter your Email, Phone, Roll Number, or IES Student ID' });
+    return res.status(400).json({ error: 'Please enter your Email, Phone, Roll Number, or Student ID' });
   }
 
   const clean = identifier.trim().toLowerCase();
@@ -844,7 +844,7 @@ router.post('/auth/signin', (req: Request, res: Response) => {
   });
 
   if (!user) {
-    return res.status(404).json({ error: 'No student or faculty record found with these details. Please Sign Up to generate your IES Student ID Card.' });
+    return res.status(404).json({ error: 'No student or faculty record found with these details. Please Sign Up to generate your Student ID Card.' });
   }
 
   // If OTP was provided, verify it if in store or master dev 123456

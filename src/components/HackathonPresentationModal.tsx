@@ -40,10 +40,10 @@ interface Slide {
 const HACKATHON_SLIDES: Slide[] = [
   {
     id: 1,
-    badge: 'IES COLLEGE HACKATHON 2026',
+    badge: 'COLLEGE EVENT HACKATHON 2026',
     title: 'CampusConnect Portal',
     subtitle: 'Next-Gen MERN Stack Event Management & Digital Student Passport Ecosystem',
-    highlight: 'IES College of Technology & Management, Bhopal',
+    highlight: 'College Event • Campus Innovation Hub',
     points: [
       {
         heading: 'Project Core',
@@ -198,7 +198,7 @@ const HACKATHON_SLIDES: Slide[] = [
     id: 6,
     badge: 'LIVE DEMO HIGHLIGHTS',
     title: 'What the Judges Will See in Live Action',
-    subtitle: 'A fully functional prototype ready for deployment at IES College',
+    subtitle: 'A fully functional prototype ready for deployment at College Event',
     points: [
       {
         heading: 'Interactive Persona Switcher',
@@ -250,7 +250,7 @@ const HACKATHON_SLIDES: Slide[] = [
   {
     id: 8,
     badge: 'CONCLUSION & Q&A',
-    title: 'Empowering IES College of Technology',
+    title: 'Empowering College Events',
     subtitle: 'Thank You Judges! We are ready for Questions & Answers.',
     highlight: 'Dhoni Patel (Lead Organizer) • Harshit Kumar Panday (Dean & Admin)',
     points: [
@@ -260,7 +260,7 @@ const HACKATHON_SLIDES: Slide[] = [
       },
       {
         heading: 'Institutional Readiness',
-        desc: 'Designed specifically with IES College governance, dean approval policies, and student co-curricular credits in mind.',
+        desc: 'Designed specifically with College Event governance, dean approval policies, and student co-curricular credits in mind.',
       },
       {
         heading: 'Live Prototype Accessible',
@@ -505,7 +505,7 @@ export const HackathonPresentationModal: React.FC<{
           {/* Slide Navigation Footnote */}
           <div className="mt-8 pt-4 border-t border-slate-800/80 flex items-center justify-between text-xs text-slate-500">
             <div className="flex items-center gap-2">
-              <span className="font-mono text-emerald-400 font-bold">IES College Hackathon 2026</span>
+              <span className="font-mono text-emerald-400 font-bold">College Event Hackathon 2026</span>
               <span>•</span>
               <span className="hidden sm:inline">Lead: Dhoni Patel & Admin: Harshit Kumar Panday</span>
             </div>

@@ -125,11 +125,11 @@ interface CampusContextType {
 const CampusContext = createContext<CampusContextType | undefined>(undefined);
 
 const STORAGE_KEYS = {
-  EVENTS: 'ies_college_events_v6',
-  REGISTRATIONS: 'ies_college_registrations_v5',
-  CERTIFICATES: 'ies_college_certificates_v5',
-  PASSPORTS: 'ies_college_passports_v5',
-  CURRENT_USER_ID: 'ies_college_current_user_id_v5',
+  EVENTS: 'college_events_v8',
+  REGISTRATIONS: 'college_registrations_v8',
+  CERTIFICATES: 'college_certificates_v8',
+  PASSPORTS: 'college_passports_v8',
+  CURRENT_USER_ID: 'college_current_user_id_v8',
 };
 
 export const CampusProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -140,7 +140,7 @@ export const CampusProvider: React.FC<{ children: React.ReactNode }> = ({ childr
 
   const [events, setEvents] = useState<CampusEvent[]>(() => {
     try {
-      const saved = localStorage.getItem(STORAGE_KEYS.EVENTS) || localStorage.getItem('ies_college_events_v5');
+      const saved = localStorage.getItem(STORAGE_KEYS.EVENTS);
       if (saved) {
         const parsed: CampusEvent[] = JSON.parse(saved);
         const initialMap = new Map(INITIAL_EVENTS.map((e) => [e.id, e]));
@@ -555,7 +555,7 @@ export const CampusProvider: React.FC<{ children: React.ReactNode }> = ({ childr
         rollNo: reg.userRollNo,
         branch: reg.userBranch,
         year: 'Class of 2026',
-        college: 'IES College',
+        college: 'College Event',
         passportNumber: `CP-2024-${Math.floor(1000 + Math.random() * 9000)}`,
         totalCredits: 0,
         eventsAttended: 0,
@@ -630,7 +630,7 @@ export const CampusProvider: React.FC<{ children: React.ReactNode }> = ({ childr
         studentRollNo: reg.userRollNo,
         studentBranch: reg.userBranch,
         issueDate: new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }),
-        organizingClub: `${event.clubName} in association with IES College`,
+        organizingClub: `${event.clubName} in association with College Event`,
         creditPoints: earnedCredits,
         verificationHash: `0x${Math.random().toString(16).substring(2, 10)}${Math.random().toString(16).substring(2, 10)}${Math.random().toString(16).substring(2, 10)}`,
         signatory: {
@@ -831,7 +831,7 @@ export const CampusProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     }
   };
 
-  // Register Student & Generate IES ID Card
+  // Register Student & Generate College Event ID Card
   const registerStudent = async (studentData: Partial<UserProfile>) => {
     try {
       const res = await fetch('/api/auth/register', {
@@ -866,21 +866,21 @@ export const CampusProvider: React.FC<{ children: React.ReactNode }> = ({ childr
       // Fallback client creation
       const currentYear = new Date().getFullYear();
       const randomSeq = Math.floor(1000 + Math.random() * 9000);
-      const fallbackId = `IES-${currentYear}-CS-${randomSeq}`;
+      const fallbackId = `CE-${currentYear}-CS-${randomSeq}`;
       const localUser: UserProfile = {
         id: `usr_${Date.now()}`,
         name: studentData.name || 'Student',
-        email: studentData.email || 'student@iesbpal.ac.in',
+        email: studentData.email || 'student@collegeevent.edu.in',
         phone: studentData.phone || '+91 98260 00000',
         rollNo: studentData.rollNo || `25CS${Math.floor(100 + Math.random() * 900)}`,
         avatar: studentData.avatar || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=250',
         role: 'student',
         branch: studentData.branch || 'Computer Science & Engineering',
         year: studentData.year || '1st Year (Class of 2029)',
-        college: 'IES College of Technology & Management, Bhopal',
+        college: 'College Event Portal, Bhopal',
         interests: studentData.interests || ['AI', 'Web Development', 'Hackathons'],
         totalCredits: 10,
-        passportId: `IES-CP-${randomSeq}`,
+        passportId: `CE-CP-${randomSeq}`,
         studentIdCardNo: fallbackId,
         bloodGroup: studentData.bloodGroup || 'B+',
         validUpto: 'June 2029',
@@ -890,7 +890,7 @@ export const CampusProvider: React.FC<{ children: React.ReactNode }> = ({ childr
       setUsers((prev) => [localUser, ...prev]);
       setCurrentUserId(localUser.id);
       setIdCardUser(localUser);
-      return { success: true, user: localUser, message: 'IES Student ID Card generated!' };
+      return { success: true, user: localUser, message: 'College Student ID Card generated!' };
     }
   };
 
@@ -925,7 +925,7 @@ export const CampusProvider: React.FC<{ children: React.ReactNode }> = ({ childr
         setCurrentUserId(found.id);
         return { success: true, user: found, message: `Welcome back, ${found.name}!` };
       }
-      return { success: false, message: 'No registered IES student found with this identifier.' };
+      return { success: false, message: 'No registered student found with this identifier.' };
     }
   };
 

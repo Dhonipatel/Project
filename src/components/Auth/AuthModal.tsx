@@ -163,7 +163,7 @@ export const AuthModal: React.FC = () => {
       return;
     }
 
-    setSuccessMsg('Verification successful! Your IES College Student ID Card has been generated.');
+    setSuccessMsg('Verification successful! Your College Student ID Card has been generated.');
     // Close auth modal and open ID Card modal after brief delay
     setTimeout(() => {
       setIsAuthModalOpen(false);
@@ -204,7 +204,7 @@ export const AuthModal: React.FC = () => {
     setSuccessMsg('');
 
     if (!signInInput.trim()) {
-      setErrorMsg('Please enter your Mobile number, Gmail, Roll No, or IES Student ID');
+      setErrorMsg('Please enter your Mobile number, Gmail, Roll No, or Student ID');
       return;
     }
 
@@ -226,7 +226,7 @@ export const AuthModal: React.FC = () => {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm overflow-y-auto">
       <div className="relative w-full max-w-xl bg-white rounded-2xl shadow-2xl border border-slate-200 overflow-hidden my-8 animate-in fade-in zoom-in-95 duration-200">
-        {/* Header Banner - IES College Official Theme */}
+        {/* Header Banner - College Event Official Theme */}
         <div className="relative bg-gradient-to-r from-slate-900 via-emerald-950 to-teal-900 px-6 py-5 text-white">
           <button
             id="close-auth-modal"
@@ -243,21 +243,21 @@ export const AuthModal: React.FC = () => {
             <div>
               <div className="flex items-center gap-2">
                 <span className="text-xs font-bold uppercase tracking-wider text-emerald-300">
-                  IES College of Technology & Management
+                  College Event Portal
                 </span>
                 <span className="px-1.5 py-0.2 text-[9px] font-extrabold bg-emerald-500/20 text-emerald-200 border border-emerald-400/30 rounded">
-                  Bhopal
+                  Official
                 </span>
               </div>
               <h2 className="text-xl font-black text-white tracking-tight">
                 {activeMode === 'signup' && 'Student Registration & ID Creation'}
                 {activeMode === 'otp' && 'Dual OTP Phone & Gmail Verification'}
-                {activeMode === 'signin' && 'Sign In to IES Student Portal'}
+                {activeMode === 'signin' && 'Sign In to College Event Portal'}
               </h2>
               <p className="text-xs text-slate-300">
                 {activeMode === 'signup' && 'Register with your phone & Gmail to generate your official verified Student ID Card'}
                 {activeMode === 'otp' && 'Enter the OTPs sent to your mobile phone number and Gmail inbox'}
-                {activeMode === 'signin' && 'Access your registered events, Campus Passport, and IES Student ID Card'}
+                {activeMode === 'signin' && 'Access your registered events, Campus Passport, and College Student ID Card'}
               </p>
             </div>
           </div>
@@ -434,7 +434,7 @@ export const AuthModal: React.FC = () => {
 
                 <div>
                   <label className="block text-xs font-bold text-slate-700 mb-1">
-                    Blood Group <span className="text-slate-400 font-normal">(Printed on IES ID Card)</span>
+                    Blood Group <span className="text-slate-400 font-normal">(Printed on College ID Card)</span>
                   </label>
                   <select
                     value={formData.bloodGroup}
@@ -457,9 +457,9 @@ export const AuthModal: React.FC = () => {
               <div className="p-3 bg-emerald-50/70 border border-emerald-200/80 rounded-xl flex items-start gap-2 text-xs text-emerald-900">
                 <ShieldCheck className="w-4 h-4 text-emerald-700 shrink-0 mt-0.5" />
                 <div>
-                  <p className="font-semibold text-emerald-950">Organised & Issued by IES College, Bhopal</p>
+                  <p className="font-semibold text-emerald-950">Official College Event Campus Portal</p>
                   <p className="text-[11px] text-emerald-800">
-                    Dual OTP verification guarantees that your Phone and Gmail are authentic before your permanent IES Student ID Card Number and QR credential are cryptographically created.
+                    Dual OTP verification guarantees that your Phone and Gmail are authentic before your permanent College Student ID Card Number and QR credential are cryptographically created.
                   </p>
                 </div>
               </div>
@@ -510,11 +510,11 @@ export const AuthModal: React.FC = () => {
                       Incoming SMS
                     </span>
                     <span className="text-[10px] px-1.5 py-0.2 rounded bg-blue-200/80 text-blue-900 font-mono">
-                      IES-SMS
+                      SMS-OTP
                     </span>
                   </div>
                   <p className="text-[11px] text-blue-950 leading-tight">
-                    "Your IES College Portal verification OTP is:{' '}
+                    "Your College Event Portal verification OTP is:{' '}
                     <strong className="font-mono text-sm tracking-wider text-blue-900 bg-white px-1.5 py-0.5 rounded border border-blue-300">
                       {dispatchedPhoneOtp}
                     </strong>
@@ -546,11 +546,11 @@ export const AuthModal: React.FC = () => {
                     </span>
                   </div>
                   <p className="text-[11px] text-rose-950 leading-tight">
-                    "IES College Verification Code:{' '}
+                    "College Event Verification Code:{' '}
                     <strong className="font-mono text-sm tracking-wider text-rose-900 bg-white px-1.5 py-0.5 rounded border border-rose-300">
                       {dispatchedEmailOtp}
                     </strong>
-                    . Use this code to verify your IES Student ID."
+                    . Use this code to verify your College Student ID."
                   </p>
                   <button
                     type="button"
@@ -648,7 +648,7 @@ export const AuthModal: React.FC = () => {
                 ) : (
                   <>
                     <ShieldCheck className="w-4 h-4" />
-                    <span>Verify Both OTPs & Generate IES Student ID Card</span>
+                    <span>Verify Both OTPs & Generate College Student ID Card</span>
                   </>
                 )}
               </button>
@@ -670,7 +670,7 @@ export const AuthModal: React.FC = () => {
             <form onSubmit={handleSignIn} className="space-y-4">
               <div>
                 <label className="block text-xs font-bold text-slate-700 mb-1">
-                  Enter Mobile Number, Gmail, Roll No, or IES Student ID
+                  Enter Mobile Number, Gmail, Roll No, or Student ID
                 </label>
                 <div className="relative">
                   <KeyRound className="w-4 h-4 text-slate-400 absolute left-3 top-3" />
@@ -679,7 +679,7 @@ export const AuthModal: React.FC = () => {
                     required
                     value={signInInput}
                     onChange={(e) => setSignInInput(e.target.value)}
-                    placeholder="e.g. +91 98260 11111 or student@gmail.com or IES-2025-CS-401"
+                    placeholder="e.g. +91 98260 11111 or student@gmail.com or CE-2026-CS-401"
                     className="w-full pl-9 pr-3 py-2.5 text-xs rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-emerald-500 bg-slate-50/50"
                   />
                 </div>
@@ -698,7 +698,7 @@ export const AuthModal: React.FC = () => {
                   </>
                 ) : (
                   <>
-                    <span>Sign In to IES Portal</span>
+                    <span>Sign In to College Event Portal</span>
                     <ArrowRight className="w-4 h-4" />
                   </>
                 )}
@@ -707,7 +707,7 @@ export const AuthModal: React.FC = () => {
               {/* Quick 1-Click Demo Profiles */}
               <div className="pt-3 border-t border-slate-200">
                 <p className="text-[11px] font-semibold text-slate-500 mb-2">
-                  Or quickly sign in as an active IES College member:
+                  Or quickly sign in as an active College Event member:
                 </p>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                   {allUsers.slice(0, 4).map((user) => (
@@ -743,7 +743,7 @@ export const AuthModal: React.FC = () => {
         <div className="px-6 py-3 bg-slate-50 border-t border-slate-200 flex items-center justify-between text-[11px] text-slate-500">
           <span className="flex items-center gap-1">
             <Building2 className="w-3.5 h-3.5 text-slate-400" />
-            IES College Campus Portal
+            College Event Campus Portal
           </span>
           <span className="text-emerald-700 font-medium">Bhopal • AICTE & RGPV Affiliated</span>
         </div>

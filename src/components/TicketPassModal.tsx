@@ -38,7 +38,7 @@ export const TicketPassModal: React.FC<TicketPassModalProps> = ({ registration, 
         eventId: registration.eventId,
         rollNo: registration.userRollNo,
         name: registration.userName,
-        app: 'IES College Event',
+        app: 'College Event',
       });
 
       QRCode.toCanvas(canvasRef.current, payload, {
@@ -86,7 +86,7 @@ export const TicketPassModal: React.FC<TicketPassModalProps> = ({ registration, 
               <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-200">
                 Official Digital Entry Pass
               </span>
-              <h3 className="text-base font-bold leading-tight">IES College Event Pass</h3>
+              <h3 className="text-base font-bold leading-tight">College Event Entry Pass</h3>
             </div>
           </div>
           <button

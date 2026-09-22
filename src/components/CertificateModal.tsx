@@ -15,7 +15,7 @@ export const CertificateModal: React.FC<CertificateModalProps> = ({ certificate,
     if (qrRef.current) {
       QRCode.toCanvas(
         qrRef.current,
-        `https://iescollege.edu/verify/cert/${certificate.certificateNo}?hash=${certificate.verificationHash}`,
+        `https://collegeevent.edu/verify/cert/${certificate.certificateNo}?hash=${certificate.verificationHash}`,
         {
           width: 90,
           margin: 1,
@@ -75,7 +75,7 @@ export const CertificateModal: React.FC<CertificateModalProps> = ({ certificate,
                 <ShieldCheck className="w-8 h-8" />
               </div>
               <span className="font-serif uppercase tracking-[0.25em] text-xs text-amber-800 font-bold">
-                IES College of Technology & Management
+                College Event • Student Council
               </span>
               <span className="text-[10px] tracking-widest text-slate-500 uppercase">
                 Office of Student Affairs & Academic Engagement

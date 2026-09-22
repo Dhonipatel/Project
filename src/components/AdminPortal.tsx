@@ -303,7 +303,7 @@ export const AdminPortal: React.FC = () => {
               {[
                 { action: 'Attendance Check-in Verified', detail: 'Nalin kumar pandey checked into Cloud Architecture Bootcamp', time: 'Sep 22, 2026' },
                 { action: 'Certificate Minted', detail: 'CERT-2026-KUBE-8801 cryptographically issued', time: 'Sep 24, 2026' },
-                { action: 'Event Sanctioned', detail: 'HackVanguard 2026 approved by Dean Harshit kumar panday', time: 'Sep 01, 2026' },
+                { action: 'Event Sanctioned', detail: "HackVanguard '26 approved by Dean Harshit kumar panday", time: 'Sep 01, 2026' },
                 { action: 'Event Proposal Submitted', detail: 'Midnight Valorant & BGMI submitted by Devansh Roy', time: 'Dec 01, 2026' },
               ].map((log, i) => (
                 <div key={i} className="p-3 bg-slate-50 rounded-xl flex items-center justify-between border border-slate-100">

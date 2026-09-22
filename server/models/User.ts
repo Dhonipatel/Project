@@ -34,7 +34,7 @@ const UserSchema = new Schema<IUserDocument>(
     role: { type: String, enum: ['student', 'organizer', 'admin'], default: 'student' },
     branch: { type: String, required: true },
     year: { type: String, required: true },
-    college: { type: String, default: 'IES College of Technology & Management, Bhopal' },
+    college: { type: String, default: 'College Event Portal, Bhopal' },
     interests: [{ type: String }],
     totalCredits: { type: Number, default: 0 },
     passportId: { type: String, required: true },

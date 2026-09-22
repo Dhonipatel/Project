@@ -32,15 +32,15 @@ export const StudentIDCardModal: React.FC = () => {
 
   const student = idCardUser || currentUser;
 
-  const cardIdNumber = student?.studentIdCardNo || `IES-2026-CS-8412`;
+  const cardIdNumber = student?.studentIdCardNo || `CE-2026-CS-8412`;
   const qrVerificationPayload = JSON.stringify({
-    institution: 'IES College of Technology & Management, Bhopal',
+    institution: 'College Event Portal, Bhopal',
     studentId: cardIdNumber,
     name: student?.name,
     rollNo: student?.rollNo,
     branch: student?.branch,
     verified: true,
-    issuedBy: 'Office of the Dean, IES College',
+    issuedBy: 'Office of the Dean, College Event',
   });
 
   useEffect(() => {
@@ -76,7 +76,7 @@ export const StudentIDCardModal: React.FC = () => {
         <div className="flex items-center justify-between px-6 py-4 bg-slate-900 text-white print:hidden">
           <div className="flex items-center gap-2">
             <ShieldCheck className="w-5 h-5 text-emerald-400" />
-            <span className="text-sm font-bold">Official IES College Student ID Card</span>
+            <span className="text-sm font-bold">Official College Event Student ID Card</span>
           </div>
           <div className="flex items-center gap-2">
             <button
@@ -115,13 +115,13 @@ export const StudentIDCardModal: React.FC = () => {
                 {/* College Names & Affiliation */}
                 <div className="flex-1 text-center">
                   <h3 className="text-base sm:text-lg font-black tracking-wide text-white uppercase leading-tight font-serif">
-                    IES COLLEGE OF TECHNOLOGY & MANAGEMENT
+                    COLLEGE EVENT
                   </h3>
                   <p className="text-[10px] sm:text-[11px] font-semibold text-amber-300 tracking-wider uppercase">
-                    BHOPAL (M.P.) • ACCREDITED CAMPUS
+                    CAMPUS STUDENT IDENTITY CARD
                   </p>
                   <p className="text-[9px] text-slate-300 leading-none mt-0.5">
-                    Approved by AICTE, New Delhi • Affiliated to RGPV, Bhopal
+                    Official College Event Verification & Entry Credential
                   </p>
                 </div>
 
@@ -151,7 +151,7 @@ export const StudentIDCardModal: React.FC = () => {
                     />
                     {/* Hologram badge on corner */}
                     <div className="absolute bottom-1 right-1 bg-emerald-700/90 text-white text-[8px] font-bold px-1.5 py-0.5 rounded shadow">
-                      IES
+                      CE
                     </div>
                   </div>
                   {/* Blood Group Tag */}
@@ -245,13 +245,13 @@ export const StudentIDCardModal: React.FC = () => {
                 <span className="text-[9px] font-bold uppercase tracking-wider text-slate-600 mt-0.5">
                   Dean / Authorized Signatory
                 </span>
-                <span className="text-[8px] text-slate-500">IES College, Bhopal</span>
+                <span className="text-[8px] text-slate-500">College Event, Bhopal</span>
               </div>
             </div>
 
             {/* Card reverse terms bar */}
             <div className="px-4 py-1.5 bg-emerald-900 text-white text-[9px] text-center font-medium">
-              This card is the property of IES College of Technology & Management, Bhopal • If found, please return to Admin Office.
+              This card is the property of College Event Portal • If found, please return to Admin Office.
             </div>
           </div>
         </div>
@@ -278,7 +278,7 @@ export const StudentIDCardModal: React.FC = () => {
               className="flex items-center gap-1.5 px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold shadow-md shadow-emerald-600/20 transition"
             >
               <Compass className="w-4 h-4" />
-              <span>Explore IES Events</span>
+              <span>Explore College Events</span>
             </button>
           </div>
         </div>

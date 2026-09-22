@@ -71,7 +71,7 @@ export const Navbar: React.FC = () => {
         </div>
 
         <div className="flex items-center gap-2">
-          {/* My IES ID Card Button */}
+          {/* My College ID Card Button */}
           <button
             id="view-my-id-card-banner"
             onClick={() => {
@@ -79,10 +79,10 @@ export const Navbar: React.FC = () => {
               setIsIdCardModalOpen(true);
             }}
             className="flex items-center gap-1.5 px-2.5 py-1 bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-300 border border-emerald-500/40 rounded-md text-[11px] font-bold transition"
-            title="View Official IES College Student ID Card"
+            title="View Official College Event Student ID Card"
           >
             <IdCard className="w-3.5 h-3.5 text-emerald-400" />
-            <span>My IES ID Card</span>
+            <span>My College ID Card</span>
           </button>
 
           {/* Register / Sign Up Button */}
@@ -149,7 +149,7 @@ export const Navbar: React.FC = () => {
                     className="w-full flex items-center justify-center gap-1.5 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded font-bold text-xs shadow-sm transition"
                   >
                     <IdCard className="w-3.5 h-3.5" />
-                    <span>View My IES ID Card</span>
+                    <span>View My College ID Card</span>
                   </button>
                 </div>
 
@@ -259,13 +259,13 @@ export const Navbar: React.FC = () => {
             </div>
             <div>
               <div className="flex items-center gap-1.5">
-                <span className="font-black text-xl tracking-tight text-slate-900">IES College Events</span>
+                <span className="font-black text-xl tracking-tight text-slate-900">College Event</span>
                 <span className="text-[10px] font-bold px-1.5 py-0.5 bg-emerald-100 text-emerald-800 rounded">
                   Official
                 </span>
               </div>
               <p className="text-[11px] font-medium text-slate-500 hidden sm:block">
-                Organised by IES College, Bhopal • AICTE & RGPV
+                College Event Portal • Connect. Participate. Grow.
               </p>
             </div>
           </div>
@@ -380,10 +380,10 @@ export const Navbar: React.FC = () => {
                 setIsIdCardModalOpen(true);
               }}
               className="hidden md:flex items-center gap-1.5 px-3 py-2 bg-emerald-50 hover:bg-emerald-100 text-emerald-900 border border-emerald-300 rounded-lg text-xs font-bold transition shadow-sm"
-              title="View Official IES College Student ID Card"
+              title="View Official College Event Student ID Card"
             >
               <IdCard className="w-4 h-4 text-emerald-600" />
-              <span>IES ID Card</span>
+              <span>College ID Card</span>
             </button>
 
             <button

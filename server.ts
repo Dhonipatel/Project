@@ -40,7 +40,7 @@ function getGenAI(): GoogleGenAI | null {
 app.get('/api/health', (req, res) => {
   res.json({
     status: 'ok',
-    appName: 'IES College Event',
+    appName: 'College Event',
     stack: 'MERN (MongoDB + Express + React + Node.js)',
     mongoConnected: isDbConnected(),
     hasGeminiKey: Boolean(process.env.GEMINI_API_KEY && process.env.GEMINI_API_KEY !== 'MY_GEMINI_API_KEY'),
@@ -131,7 +131,7 @@ function createFallbackDraft(topic?: string, category?: string, targetAudience?:
 function createFallbackChatReply(message?: string) {
   const lower = String(message || '').toLowerCase();
   if (lower.includes('hackathon') || lower.includes('hackvanguard')) {
-    return 'HackVanguard 2025 is scheduled for April 12-13 at the Campus Innovation Center! It offers 350 seats, $5,000+ in prizes, and awards 25 verified Campus Passport credits upon QR check-in.';
+    return "HackVanguard '26 is scheduled for Sep 26-27 at the Main Auditorium! It offers 350 seats, ₹1,50,000 in prizes, and awards 25 verified Campus Passport credits upon QR check-in.";
   }
   if (lower.includes('credit') || lower.includes('passport')) {
     return 'The Campus Passport is your official transcript of co-curricular engagement. Attending events and getting your QR pass scanned unlocks badges, cryptographic hashes, and graduation honors!';
@@ -140,12 +140,12 @@ function createFallbackChatReply(message?: string) {
     return 'Certificates are automatically generated and cryptographically issued once an organizer scans your QR pass at an eligible event. View and verify them in the Certificates tab!';
   }
   if (lower.includes('workshop') || lower.includes('ai')) {
-    return "Check out the 'Generative AI & Agentic Workflows Masterclass' on April 18 at Turing Computer Lab 304, or the 'UI/UX Design Sprint' on May 2!";
+    return "Check out the 'AI Agents Bootcamp' on Sep 28 at Turing Computer Lab 304, or the 'UI/UX Design Jam' on Nov 2!";
   }
   if (lower.includes('free') || lower.includes('fee')) {
-    return 'Most campus events at IES College are 100% free! For paid events like Aura Gala ($5), registration and digital ticket generation are handled seamlessly right inside the portal.';
+    return 'Most campus events are 100% free! For select passes like Tarang Cultural Fest, registration and digital ticket generation are handled seamlessly right inside the portal.';
   }
-  return "I'm your IES College Event AI Concierge! I can guide you through upcoming hackathons, passport credits, certificate verification, and QR ticket passes.";
+  return "I'm your College Event AI Concierge! I can guide you through upcoming hackathons, passport credits, certificate verification, and QR ticket passes.";
 }
 
 // AI: Personalized Event Recommendations
@@ -159,7 +159,7 @@ app.post('/api/ai/recommend', async (req, res) => {
       return res.json({ recommendations, source: 'curated-rules' });
     }
 
-    const prompt = `You are the IES College Event AI Event Matchmaker for college students.
+    const prompt = `You are the College Event AI Event Matchmaker for college students.
 Evaluate these campus events against the student's profile and provide personalized match scores (0-100) and concise 1-sentence personalized reasons explaining why each event will benefit their career, passport credits, or campus life.
 
 Student:
@@ -229,7 +229,7 @@ app.post('/api/ai/draft-event', async (req, res) => {
       return res.json(createFallbackDraft(topic, category, targetAudience));
     }
 
-    const prompt = `You are the IES College Event AI Event Assistant for student clubs and event organizers.
+    const prompt = `You are the College Event AI Event Assistant for student clubs and event organizers.
 Generate a high-converting, professional college event blueprint for:
 Topic: "${topic}"
 Category: "${category}"
@@ -276,18 +276,20 @@ app.post('/api/ai/chat', async (req, res) => {
       return res.json({ reply: createFallbackChatReply(message), source: 'assistant-rules' });
     }
 
-    const systemInstruction = `You are "IES CampusBot", the AI Concierge for the IES College Event platform.
+    const systemInstruction = `You are "CampusBot", the AI Concierge for the College Event platform.
 Tagline: "Connect. Participate. Grow."
 Help students discover events, explain the Campus Passport credit system, guide them on QR ticket check-ins, certificate downloads, and event registration.
 Keep your answers enthusiastic, concise (2-4 sentences max), helpful, and direct.
 Events currently available on campus:
-- HackVanguard 2025 (36-hr Hackathon, Apr 12, 25 Credits)
-- Generative AI Masterclass (Workshop, Apr 18, 15 Credits)
-- Aura 2025 Cultural Fest (Gala, Apr 25-27, 10 Credits)
-- RoboWars & Drone Derby (Robotics, Apr 20, 20 Credits)
-- IES Venture Summit (Startup Pitch, Apr 29, 20 Credits)
-- UI/UX Design Sprint (Workshop, May 2, 15 Credits)
-- Campus Smash Badminton Derby (Sports, May 5-6, 15 Credits)`;
+- HackVanguard '26 (36-hr Hackathon, Sep 2026, 25 Credits)
+- AI Agents Bootcamp (Workshop, Sep 2026, 15 Credits)
+- Tarang Cultural Fest (Cultural, Dec 2026, 10 Credits)
+- RoboWars & Drone Derby (Robotics, Oct 2026, 20 Credits)
+- Campus Pitch Day (Startup Pitch, Nov 2026, 20 Credits)
+- UI/UX Design Jam (Workshop, Nov 2026, 15 Credits)
+- Smash Badminton Cup (Sports, Sep 2026, 15 Credits)
+- Campus Cricket League (Sports, Oct 2026, 20 Credits)
+- CyberArena Gaming Fest (Esports, Nov 2026, 15 Credits)`;
 
     const response = await generateWithFallback(ai, (model) =>
       ai.models.generateContent({
@@ -297,7 +299,7 @@ Events currently available on campus:
     );
 
     return res.json({
-      reply: response.text || "I'm here to help you connect, participate, and grow across IES College!",
+      reply: response.text || "I'm here to help you connect, participate, and grow across College Events!",
       source: 'gemini',
     });
   } catch {
@@ -335,11 +337,11 @@ async function setupViteOrStatic() {
   }
 
   app.listen(PORT, '0.0.0.0', () => {
-    console.log(`[IES College Event] MERN Stack Server running on http://0.0.0.0:${PORT}`);
+    console.log(`[College Event] MERN Stack Server running on http://0.0.0.0:${PORT}`);
   });
 }
 
 setupViteOrStatic().catch((err) => {
-  console.error('Failed to boot IES College Event server:', err);
+  console.error('Failed to boot College Event server:', err);
   process.exit(1);
 });

@@ -77,7 +77,7 @@ const EventSchema = new Schema<IEventDocument>(
     attendedCount: { type: Number, default: 0 },
     fee: { type: Number, default: 0 },
     isFree: { type: Boolean, default: true },
-    eligibility: { type: String, default: 'All IES College Students' },
+    eligibility: { type: String, default: 'All College Students' },
     status: {
       type: String,
       enum: ['pending_approval', 'published', 'completed', 'cancelled'],

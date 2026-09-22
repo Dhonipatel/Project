@@ -107,19 +107,19 @@ export const ExploreEventsView: React.FC = () => {
             <div className="flex flex-wrap items-center gap-2">
               <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 text-xs font-bold border border-emerald-500/30">
                 <GraduationCap className="w-3.5 h-3.5 text-emerald-400" />
-                <span>IES COLLEGE OF TECHNOLOGY & MANAGEMENT, BHOPAL</span>
+                <span>COLLEGE EVENT • CAMPUS PORTAL</span>
               </div>
               <span className="text-[11px] text-amber-300 font-semibold px-2 py-0.5 rounded bg-amber-950/60 border border-amber-500/30">
-                AICTE Approved • RGPV Affiliated
+                AICTE Approved • Official Campus Portal
               </span>
             </div>
 
             <h1 className="text-2xl sm:text-4xl font-black tracking-tight leading-tight">
-              IES College Annual Techno-Cultural & Innovation Fests
+              College Event Annual Techno-Cultural & Innovation Fests
             </h1>
 
             <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
-              All events are proudly organized and hosted by <strong>IES College, Bhopal</strong>. Register with your Phone & Gmail (instant OTP verification) to generate your official Student ID Card, secure QR entry passes, and earn verified academic activity credits.
+              All events are proudly organized and hosted for <strong>College Event</strong>. Register with your Phone & Gmail (instant OTP verification) to generate your official Student ID Card, secure QR entry passes, and earn verified academic activity credits.
             </p>
 
             {/* Quick Action CTA Bar */}
@@ -145,7 +145,7 @@ export const ExploreEventsView: React.FC = () => {
                 className="flex items-center gap-2 px-4 py-2.5 bg-white/10 hover:bg-white/20 text-white font-bold text-xs rounded-xl border border-white/20 backdrop-blur-sm transition"
               >
                 <IdCard className="w-4 h-4 text-emerald-400" />
-                <span>View My IES Student ID Card</span>
+                <span>View My College Student ID Card</span>
               </button>
             </div>
 
@@ -267,7 +267,7 @@ export const ExploreEventsView: React.FC = () => {
               <div className="flex items-center gap-2">
                 <span className="text-lg">🏆</span>
                 <h2 className="text-sm font-bold text-white tracking-wide">
-                  IES College University Sports & Esports Arena
+                  College Event Sports & Esports Arena
                 </h2>
                 <span className="text-[10px] bg-emerald-500/20 text-emerald-300 font-semibold px-2 py-0.5 rounded-full border border-emerald-500/30">
                   15+ Games

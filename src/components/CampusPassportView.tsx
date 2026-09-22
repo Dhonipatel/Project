@@ -55,7 +55,7 @@ export const CampusPassportView: React.FC = () => {
   };
 
   const copyPassportLink = () => {
-    navigator.clipboard.writeText(`https://iescollege.edu/passport/${passport.passportNumber}`);
+    navigator.clipboard.writeText(`https://collegeevent.edu/passport/${passport.passportNumber}`);
     setCopiedLink(true);
     setTimeout(() => setCopiedLink(false), 2000);
   };
